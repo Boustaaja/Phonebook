@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Koko Puhelinluettelo</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <style>
+      table,
+      th,
+      td {
+        border: 3px solid rgb(29, 71, 82);
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 20px;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Koko Puhelinluettelo</h1>
+    <table id="phonebookTable">
+      <thead>
+        <tr>
+          <th>Nimi</th>
+          <th>Puhelinnumero</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Taulukon tiedot täytetään täällä -->
+      </tbody>
+    </table>
+    <br />
+    <a href="index.html">Takaisin pääsivulle</a>
+
+    <script>
+      $(document).ready(function () {
+        // FETCHING DATA FROM JSON FILE
+        $.getJSON(
+          "http://a41d.k.time4vps.cloud:3001/henkilot",
+          function (data) {
+            data.forEach(function (person) {
+              $("#phonebookTable tbody").append(
+                "<tr><td>" +
+                  person.nimi +
+                  "</td><td>" +
+                  person.puhelin +
+                  "</td></tr>"
+              );
+            });
+          }
+        );
+      });
+    </script>
+  </body>
+</html>

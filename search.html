@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fi">
+  <head>
+    <title>Hae Puhelinnumero</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <h1>Hae Puhelinnumero</h1>
+    <form id="form" name="form">
+      <th>Syötä nimi:</th>
+      <td>
+        <input
+          name="nimi"
+          id="nimi"
+          type="text"
+          value=""
+          maxlength="35"
+          size="35"
+        />
+      </td>
+      <td>
+        <input
+          name="puhelin"
+          id="puhelin"
+          type="text"
+          value=""
+          maxlength="35"
+          size="35"
+        />
+      </td>
+      <input name="submit" type="button" value="Hae puhelinnumero" />
+    </form>
+    <a href="index.html">Takaisin pääsivulle</a>
+
+    <script>
+      $(document).ready(function () {
+        // Hakupainikkeen klikkaus
+        $('[name="submit"]').click(function () {
+          var name = $("#nimi").val().toLowerCase(); // Haetaan syötetty nimi ja muutetaan se pieniksi kirjaimiksi
+
+          // Varmistetaan, että nimi ei ole tyhjä
+          if (name === "") {
+            alert("Syötä nimi");
+            return;
+          }
+
+          // Haetaan data JSON-tiedostosta
+          $.getJSON(
+            "http://a41d.k.time4vps.cloud:3001/henkilot",
+            function (data) {
+              var foundPerson = data.find(function (person) {
+                // Etsitään henkilö, jonka nimi vastaa syötettyä nimeä
+                return person.nimi.toLowerCase() === name;
+              });
+
+              if (foundPerson) {
+                $("#puhelin").val(foundPerson.puhelin); // Jos henkilö löytyi, näytetään puhelinnumero
+              } else {
+                $("#puhelin").val("Numeroa ei löytynyt."); // Jos henkilöä ei löydy
+              }
+            }
+          ).fail(function () {
+            alert("Tietojen haku epäonnistui. Tarkista verkkoyhteys.");
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
